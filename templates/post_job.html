@@ -1,0 +1,42 @@
+
+{% extends 'base.html' %}
+{% block title %}Post Job{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="form-box mx-auto">
+        <h2 class="mb-4">{{ 'Edit Job' if job else 'Post a New Job' }}</h2>
+
+        <form method="POST">
+            <input name="title" class="form-control mb-3"
+                   placeholder="Job Title"
+                   value="{{ job.title if job else '' }}" required>
+
+            <input name="company" class="form-control mb-3"
+                   placeholder="Company Name"
+                   value="{{ job.company if job else '' }}" required>
+
+            <input name="category" class="form-control mb-3"
+                   placeholder="Job Category"
+                   value="{{ job.category if job else '' }}" required>
+
+            <input name="location" class="form-control mb-3"
+                   placeholder="Job Location"
+                   value="{{ job.location if job else '' }}" required>
+
+            <input name="salary" class="form-control mb-3"
+                   placeholder="Salary"
+                   value="{{ job.salary if job else '' }}">
+
+            <textarea name="description" class="form-control mb-3"
+                      rows="5" placeholder="Job Description"
+                      required>{{ job.description if job else '' }}</textarea>
+
+            <button class="btn btn-primary w-100">
+                {{ 'Update Job' if job else 'Publish Job' }}
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

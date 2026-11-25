@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+{% block title %}Applicants{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+    <h2>Applicants for {{ job.title }}</h2>
+
+    <div class="table-responsive mt-4">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Applicant</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application, user in applicants %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ application.status }}</td>
+                <td>
+                    <form method="POST"
+                          action="/application-status/{{ application.id }}"
+                          class="d-flex gap-2">
+                        <select name="status" class="form-select">
+                            {% for status in ['Pending', 'Shortlisted', 'Rejected', 'Accepted'] %}
+                            <option value="{{ status }}"
+                                {% if application.status == status %}selected{% endif %}>
+                                {{ status }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-primary btn-sm">Save</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No applicants yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock %}

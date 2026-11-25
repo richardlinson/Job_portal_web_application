@@ -1,0 +1,82 @@
+
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+    <h2>Admin Dashboard</h2>
+
+    <div class="row my-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white p-3">
+                <h4>Total Users</h4>
+                <h2>{{ users|length }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white p-3">
+                <h4>Total Jobs</h4>
+                <h2>{{ jobs|length }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning p-3">
+                <h4>Applications</h4>
+                <h2>{{ applications|length }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-5">Manage Users</h4>
+    <div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                {% if user.id != session.get('user_id') %}
+                <form method="POST"
+                      action="/admin/delete-user/{{ user.id }}"
+                      onsubmit="return confirm('Delete this user?')">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <h4 class="mt-5">Manage Job Listings</h4>
+    <div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr><th>Title</th><th>Company</th><th>Location</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.title }}</td>
+            <td>{{ job.company }}</td>
+            <td>{{ job.location }}</td>
+            <td>
+                <form method="POST"
+                      action="/admin/delete-job/{{ job.id }}">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock %}

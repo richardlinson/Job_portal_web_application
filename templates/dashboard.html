@@ -1,0 +1,88 @@
+
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+    <h2>Welcome, {{ session.get('name') }}</h2>
+
+    {% if session.get('role') == 'employer' %}
+
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h4>My Job Listings</h4>
+            <a href="/post-job" class="btn btn-primary">+ Post New Job</a>
+        </div>
+
+        <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>
+                        <a href="/edit-job/{{ job.id }}"
+                           class="btn btn-sm btn-warning">Edit</a>
+                        <a href="/applications/{{ job.id }}"
+                           class="btn btn-sm btn-info">Applicants</a>
+                        <form method="POST"
+                              action="/delete-job/{{ job.id }}"
+                              class="d-inline"
+                              onsubmit="return confirm('Delete this job?')">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No jobs posted yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+    {% elif session.get('role') == 'seeker' %}
+
+        <h4 class="my-4">My Applications</h4>
+
+        <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Job ID</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.id }}</td>
+                    <td>
+                        <a href="/job/{{ application.job_id }}">
+                            {{ application.job_id }}
+                        </a>
+                    </td>
+                    <td>{{ application.status }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3">No applications submitted yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+        <a href="/jobs" class="btn btn-primary">Explore Jobs</a>
+
+    {% endif %}
+</div>
+
+{% endblock %}

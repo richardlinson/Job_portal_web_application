@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% block title %}Home - Job Portal{% endblock %}
+{% block content %}
+
+<section class="hero text-center text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Find Your Dream Job</h1>
+        <p class="lead">Discover opportunities and build your career.</p>
+
+        <form action="/jobs" method="GET" class="row g-2 mt-4">
+            <div class="col-md-5">
+                <input name="keyword" class="form-control form-control-lg"
+                       placeholder="Job title">
+            </div>
+            <div class="col-md-5">
+                <input name="location" class="form-control form-control-lg"
+                       placeholder="Location">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-warning btn-lg w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Latest Jobs</h2>
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-4 mb-3">
+            <div class="card job-card h-100 p-3">
+                <h5>{{ job.title }}</h5>
+                <p class="text-primary">{{ job.company }}</p>
+                <p>📍 {{ job.location }}</p>
+                <p>💰 {{ job.salary }}</p>
+                <a href="/job/{{ job.id }}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">No jobs posted yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
